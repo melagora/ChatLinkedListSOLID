@@ -9,10 +9,10 @@ public class Message {
     private final String content;
     private final LocalDateTime timestamp;
 
-    public Message(User sender, String content, LocalDateTime timestamp) {
+    public Message(User sender, String content) {
         this.sender = sender;
         this.content = content;
-        this.timestamp = timestamp;
+        this.timestamp = LocalDateTime.now(); //timestamp;
     }
 
     public User getSender() {

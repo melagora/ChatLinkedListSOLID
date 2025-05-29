@@ -14,7 +14,7 @@ public class MessageLinkedList {
             head = newMessageNode;
         } else{
             MessageNode current = head;
-            while (current != null){
+            while (current.next != null){
                 current = current.next;
             }
             current.next = newMessageNode;
@@ -25,7 +25,7 @@ public class MessageLinkedList {
         MessageNode current = head;
         while (current != null){
             Message message = current.message;
-            System.out.println(message.getTimestamp() + "[" +message.getSender() + "]" + message.getContent());
+            System.out.println(message.getTimestamp() + "[" +message.getSender().getName() + "]" + message.getContent());
             current = current.next;
         }
     }
