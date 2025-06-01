@@ -1,0 +1,111 @@
+@startuml
+
+' Paquetes
+package "com.kodigo.jd20.chat.application" {
+    class Main
+}
+
+package "com.kodigo.jd20.chat.datastructure" {
+    class MessageLinkedList {
+        - MessageNode head
+        + add(message: IMessage)
+        + getAll(): List<IMessage>
+        + isEmpty(): boolean
+    }
+
+    class MessageNode {
+        - IMessage message
+        - MessageNode next
+        + getMessage(): IMessage
+        + getNext(): MessageNode
+        + setNext(next: MessageNode)
+    }
+}
+
+package "com.kodigo.jd20.chat.model" {
+    interface IMessage {
+        + getSender(): User
+        + getContent(): String
+        + getFormattedText(): String
+    }
+
+    class Message {
+        - User sender
+        - String content
+        - LocalDateTime timestamp
+        + getSender(): User
+        + getContent(): String
+        + getTimestamp(): LocalDateTime
+    }
+
+    class TextMessages {
+        - User sender
+        - String content
+        - LocalDateTime timestamp
+        + getSender(): User
+        + getContent(): String
+        + getFormattedText(): String
+    }
+
+    class Chat {
+        - String id
+        - List<User> participants
+        - MessageLinkedList messages
+        + addParticipant(user: User)
+        + addMessage(message: IMessage)
+        + getMessages(): MessageLinkedList
+        + getId(): String
+        + getParticipants(): List<User>
+    }
+
+    class User {
+        - String id
+        - String name
+        + getId(): String
+        + getName(): String
+    }
+}
+
+package "com.kodigo.jd20.chat.service" {
+    class ChatService {
+        - Map<String, Chat> chats
+        + createChat(): Chat
+        + addUserToChat(chatId: String, user: User)
+        + sendMesssage(chatId: String, message: IMessage)
+        + getMessage(chatId: String): List<IMessage>
+    }
+
+    class UserService {
+        - Map<String, User> users
+        + createUSer(id: String, name: String): User
+        + getUser(id: String): User
+    }
+}
+
+' Relaciones
+Main --> UserService
+Main --> ChatService
+Main --> Chat
+Main --> TextMessages
+Main --> IMessage
+
+ChatService --> Chat
+ChatService --> IMessage
+ChatService --> User
+
+UserService --> User
+
+Chat --> User : participants
+Chat --> MessageLinkedList : messages
+Chat --> IMessage : uses
+
+MessageLinkedList --> MessageNode
+MessageLinkedList --> IMessage
+
+MessageNode --> IMessage
+
+TextMessages ..|> IMessage
+Message --> User
+TextMessages --> User
+
+@enduml

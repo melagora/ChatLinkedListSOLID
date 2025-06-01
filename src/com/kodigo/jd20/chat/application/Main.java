@@ -1,6 +1,8 @@
 package com.kodigo.jd20.chat.application;
 
 import com.kodigo.jd20.chat.model.Chat;
+import com.kodigo.jd20.chat.model.IMessage;
+import com.kodigo.jd20.chat.model.TextMessages;
 import com.kodigo.jd20.chat.model.User;
 import com.kodigo.jd20.chat.service.ChatService;
 import com.kodigo.jd20.chat.service.UserService;
@@ -16,14 +18,20 @@ public class Main {
         User melvin = userService.createUSer ("1","Melvin");
         User valeria = userService.createUSer ("2","Valeria");
 
-        Chat chat = chatService.createChat("chat1");
-        chat.addParticipant(melvin);
-        chat.addParticipant(valeria);
+        Chat chat = chatService.createChat();
+        chatService.addUserToChat(chat.getId(), melvin);
+        chatService.addUserToChat(chat.getId(), valeria);
 
-        chatService.sendMesssage("chat1", melvin, "Hola Valeria, ¿Todavía estás trabajando en el mismo lugar?");
-        chatService.sendMesssage("chat1", valeria, "Holaaaaa, jajaja fijate que sí, aún sigo");
-        chatService.sendMesssage("chat1", melvin, "¡Que bueno!, Te escribía para algo :p");
+        //IMessage txtMessage1 = new TextMessages(melvin, "Hola Valeria, ¿Todavía estás trabajando en el mismo lugar?");
+        //chatService.sendMesssage(chat.getId(), txtMessage1);
 
-        chatService.getMessage("chat1");
+        chatService.sendMesssage(chat.getId(), new TextMessages (melvin, "Hola Valeria, ¿Todavía estás trabajando en el mismo lugar?"));
+        chatService.sendMesssage(chat.getId(), new TextMessages (valeria, "Holaaaaa, jajaja fijate que sí, aún sigo"));
+        chatService.sendMesssage(chat.getId(), new TextMessages (melvin, "¡Que bueno!, Te escribía para algo :p"));
+        chatService.sendMesssage(chat.getId(), new TextMessages (valeria, "Me lo imagine :v"));
+
+        for (IMessage message : chatService.getMessage(chat.getId())){
+            System.out.println(message.getFormattedText());
+        }
     }
 }

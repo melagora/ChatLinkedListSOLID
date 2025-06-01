@@ -1,12 +1,15 @@
 package com.kodigo.jd20.chat.datastructure;
 
-import com.kodigo.jd20.chat.model.Message;
+import com.kodigo.jd20.chat.model.IMessage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //4
 public class MessageLinkedList {
     private MessageNode head;
 
-    public void add(Message message){
+    public void add(IMessage message){
         //Creamos el nodo con el "message" que nos proporcionan
         MessageNode newMessageNode = new MessageNode(message);
 
@@ -14,21 +17,23 @@ public class MessageLinkedList {
             head = newMessageNode;
         } else{
             MessageNode current = head;
-            while (current.next != null){
-                current = current.next;
+            while (current.getNext() != null){
+                current = current.getNext();
             }
-            current.next = newMessageNode;
+            current.setNext(newMessageNode);
         }
     }
 
-    public void showAll (){
+    public List<IMessage> getAll (){
+        List<IMessage> messages = new ArrayList<>();
         MessageNode current = head;
         while (current != null){
-            Message message = current.message;
-            System.out.println(message.getTimestamp() + "[" +message.getSender().getName() + "]" + message.getContent());
-            current = current.next;
+            messages.add(current.getMessage());
+            current = current.getNext();
         }
+        return messages;
     }
+
     public boolean isEmpty(){
         return head == null;
     }
